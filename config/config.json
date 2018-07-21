@@ -1,0 +1,12 @@
+{
+  "wav_dir": "./www/wav",
+  "db": {
+    "host": "mysql",
+    "user": "root",
+    "passwd": "admin",
+    "db": "kws",
+    "charset": "utf8"
+  }
+}
+
+

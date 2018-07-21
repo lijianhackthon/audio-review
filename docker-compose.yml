@@ -1,0 +1,25 @@
+version: "3"
+services:
+  web:
+    # replace username/repo:tag with your name and image details
+    image: kws-review
+    build: .
+    deploy:
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: kws
+      MYSQL_ROOT_PASSWORD: admin
+
+
