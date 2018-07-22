@@ -1,5 +1,8 @@
 {
-  "wav_dir": "wav",
+  "dir": {
+    "wav/06-Jul-2018": false,
+    "wav/test"       : true
+  },
 
   "db": {
     "host": "mysql",

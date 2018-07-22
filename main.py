@@ -60,7 +60,8 @@ class AdminHandler(tornado.web.RequestHandler):
                                          page = page,
                                          num_pages = num_pages,
                                          start_page = start_page,
-                                         end_page = end_page)
+                                         end_page = end_page,
+                                         total = review_count)
 
 class Application(tornado.web.Application):
     def __init__(self):
@@ -88,12 +89,15 @@ class Application(tornado.web.Application):
         db = dbhelper.DbHelper(**self.db_config)
         if not db.table_exist():
             db.create_table()
-            # update index
-            all_wav_files = glob.glob(r'wav/*/*.wav')
-            for i, wav in enumerate(all_wav_files):
-                db.insert(wav, 'false', 'false')
-                if i % 50 == 0:
-                    logging.info('creating index %d', i)
+        # update index
+        for dirname in self.config["dir"]:
+            update = self.config["dir"][dirname]
+            if update:
+                all_wav_files = glob.glob('%s/*.wav' % dirname)
+                for i, wav in enumerate(all_wav_files):
+                    db.insert(wav, 'false', 'false')
+                    if i % 50 == 0:
+                        logging.info('creating index %s %d', dirname, i)
 
     def start(self):
         logging.info('server start, port: %d...' % 8000)
