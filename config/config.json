@@ -1,5 +1,6 @@
 {
-  "wav_dir": "./www/wav",
+  "wav_dir": "wav",
+
   "db": {
     "host": "mysql",
     "user": "root",
