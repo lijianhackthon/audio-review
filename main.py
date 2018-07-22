@@ -27,6 +27,19 @@ class UpdateHandler(tornado.web.RequestHandler):
         db = dbhelper.DbHelper(**self.application.db_config)
         db.update(id, operation, 'true')
 
+class ExportHandler(tornado.web.RequestHandler):
+    @tornado.gen.coroutine
+    def get(self):
+        db = dbhelper.DbHelper(**self.application.db_config)
+        review_count = db.get_review_count()
+        items = db.get_all_review(0, review_count)
+        self.set_header('Content-Type','text/plain')
+        self.set_header('content-Disposition','attachment; filename=export.txt')  
+        for item in items:
+            if item[2] == 1 and item[3] == 1:
+                self.write(item[1] + '\n')
+                yield self.flush()
+
 class AdminHandler(tornado.web.RequestHandler):
     def get(self):
         page = int(self.get_argument('page', 0, strip=True))
@@ -61,6 +74,7 @@ class Application(tornado.web.Application):
             (r'/', MainHandler),
             (r'/admin', AdminHandler),
             (r'/update', UpdateHandler),
+            (r'/export', ExportHandler),
             (r'/static/', tornado.web.StaticFileHandler, dict(path=settings['static_path']))
         ]
         tornado.web.Application.__init__(self, handlers, **settings)
