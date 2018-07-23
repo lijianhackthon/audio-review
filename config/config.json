@@ -1,7 +1,7 @@
 {
   "dir": {
-    "wav/06-Jul-2018": false,
-    "wav/test"       : true
+    "wav/06-Jul-2018": true,
+    "wav/test"       : false
   },
 
   "db": {
